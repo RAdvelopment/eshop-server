@@ -48,12 +48,10 @@ function getProducts(req, res) {
           .send({ code: 500, message: "Ha ocurrido un error en el servidor." });
       } else {
         if (!productGetted) {
-          res
-            .status(404)
-            .send({
-              code: 404,
-              message: "No se han encontrado los productos.",
-            });
+          res.status(404).send({
+            code: 404,
+            message: "No se han encontrado los productos.",
+          });
         } else {
           res.status(200).send({ code: 200, products: productGetted });
         }
@@ -61,7 +59,33 @@ function getProducts(req, res) {
     });
 }
 
+function deleteProduct(req, res) {
+  const { id } = req.params;
+
+  Product.findByIdAndRemove(id, (err, productDeleted) => {
+    if (err) {
+      res
+        .status(500)
+        .send({ code: 500, message: "Ha ocurrido un error en el servidor." });
+    } else {
+      if (!productDeleted) {
+        res.status(404).send({
+          code: 404,
+          message: "No se ha podido borrar el producto con este identificador.",
+        });
+      } else {
+        res.status(200).send({
+          code: 200,
+          product: productDeleted,
+          message: "Producto eliminado exitosamente.",
+        });
+      }
+    }
+  });
+}
+
 module.exports = {
   setProducts,
   getProducts,
+  deleteProduct,
 };
