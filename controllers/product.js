@@ -84,8 +84,56 @@ function deleteProduct(req, res) {
   });
 }
 
+function updateProduct(req, res) {
+  const productData = req.body;
+  const { id } = req.params;
+
+  Product.findByIdAndUpdate(id, productData, (err, productUpdated) => {
+    if (err) {
+      res
+        .status(500)
+        .send({ code: 500, message: "Ha ocurrido un error en el servidor." });
+    } else {
+      if (!productUpdated) {
+        res.status(404).send({
+          code: 404,
+          message: "No se ha podido actualizar el producto adecuadamente.",
+        });
+      } else {
+        res
+          .status(200)
+          .send({ code: 200, message: "Producto actualizado correctamente." });
+      }
+    }
+  });
+}
+
+function getProductId(req, res) {
+  const { id } = req.params;
+
+  Product.findById(id, (err, productGetted) => {
+    if (err) {
+      res
+        .status(500)
+        .send({ code: 500, message: "Ha ocurrido un error en el servidor." });
+    } else {
+      if (!productGetted) {
+        res.status(404).send({
+          code: 404,
+          message:
+            "No se ha encontrado el producto que está intentando buscar.",
+        });
+      } else {
+        res.status(200).send({ code: 200, productGetted });
+      }
+    }
+  });
+}
+
 module.exports = {
   setProducts,
   getProducts,
   deleteProduct,
+  updateProduct,
+  getProductId,
 };

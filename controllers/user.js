@@ -82,7 +82,26 @@ function signIn(req, res) {
   });
 }
 
+function getUsers(req, res) {
+  Users.find((err, userGet) => {
+    if (err) {
+      res
+        .status(500)
+        .send({ code: 500, message: "Ha ocurrido un error en el servidor" });
+    } else {
+      if (!userGet) {
+        res
+          .status(404)
+          .send({ code: 404, message: "No se ha encontrado los usuarios" });
+      } else {
+        res.status(200).send({ code: 200, users: userGet });
+      }
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
+  getUsers,
 };

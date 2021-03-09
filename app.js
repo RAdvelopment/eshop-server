@@ -7,6 +7,7 @@ const { API_VERSION } = require("./config.js");
 
 const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
+const selledRoutes = require("./routes/selled");
 
 //Body parser para obtener los datos a través de los api's y pasarlos a json
 
@@ -30,5 +31,6 @@ app.use((req, res, next) => {
 
 app.use(`/eshop`, userRoutes);
 app.use(`/eshop`, productRoutes);
+app.use(`/eshop`, selledRoutes);
 
 module.exports = app;
